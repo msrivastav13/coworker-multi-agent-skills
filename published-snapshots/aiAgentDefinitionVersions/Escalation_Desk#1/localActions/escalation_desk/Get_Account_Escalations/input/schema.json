@@ -1,0 +1,14 @@
+{
+  "required" : [ "accountNameOrId" ],
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "accountNameOrId" : {
+      "title" : "Account Name or Id",
+      "description" : "The account name exactly as the user said it, or its Salesforce Id.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    }
+  },
+  "lightning:type" : "lightning__objectType"
+}

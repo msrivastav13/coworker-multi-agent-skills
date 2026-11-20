@@ -1,0 +1,28 @@
+{
+  "required" : [ "opportunityId", "riskBand", "savePlan" ],
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "opportunityId" : {
+      "title" : "Opportunity Id",
+      "description" : "renewalOpportunityId from Get_Account_Renewal_Risk.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "riskBand" : {
+      "title" : "Risk Band",
+      "description" : "The band exactly as Get_Account_Renewal_Risk returned it: High, Medium, or Low.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "savePlan" : {
+      "title" : "Save Plan",
+      "description" : "The save plan the user approved, as numbered steps.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    }
+  },
+  "lightning:type" : "lightning__objectType"
+}

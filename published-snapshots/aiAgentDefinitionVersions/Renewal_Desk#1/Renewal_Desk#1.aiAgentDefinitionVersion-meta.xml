@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AiAgentDefinitionVersion xmlns="http://soap.sforce.com/2006/04/metadata">
+    <articleAnswersGPTEnabled>false</articleAnswersGPTEnabled>
+    <billingMode>ActionBased</billingMode>
+    <citationsEnabled>false</citationsEnabled>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>The agent instructions</description>
+        <developerName>AgentScriptInternal_agent_instructions</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Agent Instructions</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>The next topic to be visited</description>
+        <developerName>AgentScriptInternal_next_topic</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Next Topic</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <copilotPrimaryLanguage>en_US</copilotPrimaryLanguage>
+    <genAiPlannerName>Renewal_Desk_v1</genAiPlannerName>
+    <isScriptCompatibleAgent>true</isScriptCompatibleAgent>
+    <knowledgeActionEnabled>false</knowledgeActionEnabled>
+    <knowledgeFallbackEnabled>false</knowledgeFallbackEnabled>
+    <planner>
+        <fullName>Renewal_Desk_v1</fullName>
+        <agentGraphRef>20Zg70000085M3K</agentGraphRef>
+        <description>Ranks upcoming renewals by risk, explains an account&apos;s risk factors, answers renewal policy questions from the Customer Success Playbooks data library, and saves approved save plans.</description>
+        <localTopicLinks>
+            <genAiPluginName>renewal_desk</genAiPluginName>
+        </localTopicLinks>
+        <localTopics>
+            <canEscalate>false</canEscalate>
+            <description>Find renewals at risk, explain one account&apos;s risk, answer renewal policy questions, and save approved save plans.</description>
+            <genAiPluginInstructions>
+                <description>You are Renewal Desk, an internal assistant for Customer Success Managers.
+You find renewals at risk, explain why, say what the company playbook
+requires, and save the save plan the CSM approves. Stay on renewals and
+briefly redirect anything else. Never invent scores, factors, or policy.</description>
+                <developerName>instruction0_179g7000002HmVJ</developerName>
+                <language>en_US</language>
+                <masterLabel>instruction0_179g7000002HmVJ</masterLabel>
+                <sortOrder>1</sortOrder>
+            </genAiPluginInstructions>
+            <language>en_US</language>
+            <localActionLinks>
+                <functionName>Create_Renewal_Save_Plan</functionName>
+            </localActionLinks>
+            <localActionLinks>
+                <functionName>Get_Account_Renewal_Risk</functionName>
+            </localActionLinks>
+            <localActionLinks>
+                <functionName>AnswerQuestionsWithKnowledge</functionName>
+            </localActionLinks>
+            <localActionLinks>
+                <functionName>List_Upcoming_Renewals</functionName>
+            </localActionLinks>
+            <localActions>
+                <description>Answers questions from the Customer Success Playbooks data library: the FY27 Renewal Playbook, the Renewal Concessions and Discount Policy, and the Escalation Management Standard.</description>
+                <invocationTarget>streamKnowledgeSearch</invocationTarget>
+                <invocationTargetType>standardInvocableAction</invocationTargetType>
+                <isConfirmationRequired>false</isConfirmationRequired>
+                <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+                <localDeveloperName>AnswerQuestionsWithKnowledge</localDeveloperName>
+                <masterLabel>Answer Questions with Knowledge</masterLabel>
+                <progressIndicatorMessage>Checking the playbook</progressIndicatorMessage>
+                <source>EmployeeCopilot__AnswerQuestionsWithKnowledge</source>
+            </localActions>
+            <localActions>
+                <description>Records the risk band and save plan on the renewal opportunity and creates a follow-up task for the opportunity owner. Changes data.</description>
+                <invocationTarget>Create_Renewal_Save_Plan</invocationTarget>
+                <invocationTargetType>flow</invocationTargetType>
+                <isConfirmationRequired>true</isConfirmationRequired>
+                <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+                <localDeveloperName>Create_Renewal_Save_Plan</localDeveloperName>
+                <masterLabel>Create Renewal Save Plan</masterLabel>
+                <progressIndicatorMessage>Saving the save plan</progressIndicatorMessage>
+            </localActions>
+            <localActions>
+                <description>Scores renewal risk for one account and explains the factors: seat utilization, high-priority and escalated cases, QBR recency, and renewal timing.</description>
+                <invocationTarget>GetAccountRenewalRisk</invocationTarget>
+                <invocationTargetType>apex</invocationTargetType>
+                <isConfirmationRequired>false</isConfirmationRequired>
+                <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+                <localDeveloperName>Get_Account_Renewal_Risk</localDeveloperName>
+                <masterLabel>Get Account Renewal Risk</masterLabel>
+                <progressIndicatorMessage>Scoring renewal risk</progressIndicatorMessage>
+            </localActions>
+            <localActions>
+                <description>Lists open renewal opportunities closing in the next N days, ranked by renewal risk score (High, Medium, Low).</description>
+                <invocationTarget>ListUpcomingRenewals</invocationTarget>
+                <invocationTargetType>apex</invocationTargetType>
+                <isConfirmationRequired>false</isConfirmationRequired>
+                <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+                <localDeveloperName>List_Upcoming_Renewals</localDeveloperName>
+                <masterLabel>List Upcoming Renewals</masterLabel>
+                <progressIndicatorMessage>Ranking upcoming renewals</progressIndicatorMessage>
+            </localActions>
+            <localDeveloperName>renewal_desk</localDeveloperName>
+            <masterLabel>Renewal Desk</masterLabel>
+            <pluginType>Topic</pluginType>
+        </localTopics>
+        <masterLabel>Renewal Desk</masterLabel>
+        <plannerType>Atlas__ConcurrentMultiAgentOrchestration</plannerType>
+    </planner>
+    <smallTalkEnabled>false</smallTalkEnabled>
+    <staticPromptsEnabled>false</staticPromptsEnabled>
+    <status>Inactive</status>
+    <stopRecPrompts>false</stopRecPrompts>
+    <surfacesEnabled>false</surfacesEnabled>
+    <toneType>Casual</toneType>
+    <version>1</version>
+    <welcomeMessage>Hi, I&apos;m Renewal Desk. Ask me which renewals need attention, or about one account&apos;s renewal.</welcomeMessage>
+</AiAgentDefinitionVersion>

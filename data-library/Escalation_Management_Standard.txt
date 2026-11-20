@@ -1,0 +1,17 @@
+ESCALATION MANAGEMENT STANDARD
+Owner: Support Operations.
+
+1. WHAT COUNTS AS ESCALATED
+A case is escalated when its Status is Escalated or its Escalated flag is set. Escalated cases on accounts with an open renewal are reported to Customer Success every day.
+
+2. REQUIRED FOR EVERY ESCALATED CASE
+2.1 A named executive owner from Support or Engineering within 1 business day.
+2.2 A customer update every business day until the case is resolved.
+2.3 A target resolution date shared with the customer.
+2.4 A root-cause analysis (RCA) delivered within 5 business days of resolution.
+
+3. HIGH PRIORITY CASES
+High priority cases that are not escalated need a customer update every 2 business days. If a High priority case is open for more than 10 business days, Support escalates it.
+
+4. RENEWAL INTERACTION
+Before an executive sponsor call for a High risk renewal, the CSM must have the current status, executive owner, and target date of every escalated case on the account.

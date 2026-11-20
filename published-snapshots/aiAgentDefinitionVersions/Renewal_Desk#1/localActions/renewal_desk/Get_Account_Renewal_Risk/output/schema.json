@@ -1,0 +1,38 @@
+{
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "band" : {
+      "title" : "Risk Band",
+      "description" : "High, Medium, or Low.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isDisplayable" : false,
+      "copilotAction:isUsedByPlanner" : true
+    },
+    "renewalOpportunityId" : {
+      "title" : "Renewal Opportunity Id",
+      "description" : "Id of the open renewal opportunity, or empty if there is none.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isDisplayable" : false,
+      "copilotAction:isUsedByPlanner" : true
+    },
+    "riskJson" : {
+      "title" : "Risk JSON",
+      "description" : "Full detail: renewal, seat utilization, cases, QBR, and each scoring factor with its points.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isDisplayable" : false,
+      "copilotAction:isUsedByPlanner" : true
+    },
+    "score" : {
+      "title" : "Risk Score",
+      "description" : "Total points; 50 or more is High, 25 to 49 is Medium.",
+      "lightning:type" : "lightning__integerType",
+      "lightning:isPII" : false,
+      "copilotAction:isDisplayable" : false,
+      "copilotAction:isUsedByPlanner" : true
+    }
+  },
+  "lightning:type" : "lightning__objectType"
+}

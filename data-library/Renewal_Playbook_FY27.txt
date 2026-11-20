@@ -1,0 +1,32 @@
+CUSTOMER SUCCESS RENEWAL PLAYBOOK - FY27
+Owner: Customer Success Operations. Applies to every renewal opportunity (Type: Existing Business).
+
+1. HOW TO USE THIS PLAYBOOK
+Every open renewal has a renewal risk band: High, Medium, or Low. The band comes from the Get Account Renewal Risk tool. This playbook says what the Customer Success Manager (CSM) must do for each band and by when. Do not change the band by hand; fix the underlying signal instead.
+
+2. HIGH RISK RENEWALS
+A High risk renewal needs a written save plan within 2 business days of the renewal being flagged.
+Required steps:
+2.1 Executive sponsor call. The CSM books a call with the customer's executive sponsor within 5 business days. The account's VP of Customer Success joins if the renewal is over 150,000 USD.
+2.2 Joint save plan. The CSM and the Account Executive agree one save plan and record it on the renewal opportunity (Save Plan field).
+2.3 Escalated cases first. Every escalated case must have a named executive owner and a target resolution date before the sponsor call. See the Escalation Management Standard.
+2.4 Adoption recovery. If seat utilization is under 50 percent, offer a free adoption workshop and a rightsizing conversation. Do not propose a multi-year discount while utilization is under 50 percent.
+2.5 QBR reset. If the last QBR was more than 120 days ago, schedule one before the renewal close date.
+2.6 Weekly review. High risk renewals are reviewed every Monday in the renewal forecast call until the band drops to Medium.
+
+3. MEDIUM RISK RENEWALS
+3.1 Adoption review with the customer's admin within 15 business days.
+3.2 QBR within 30 days if the last one was more than 120 days ago.
+3.3 Record a short save plan (3 steps or fewer) on the renewal opportunity.
+3.4 Any concession follows the Renewal Concessions and Discount Policy.
+
+4. LOW RISK RENEWALS
+4.1 Standard renewal motion: send the renewal quote 60 days before the close date.
+4.2 Check for expansion: if seat utilization is over 90 percent, the AE prepares an add-on seat proposal.
+4.3 No save plan is required.
+
+5. RENEWALS CLOSING IN 30 DAYS OR LESS
+If a renewal closes in 30 days or less and is not in Negotiation, the CSM alerts their manager the same day, whatever the band.
+
+6. COMMUNICATION RULES
+Never share the internal risk score or band with the customer. Describe actions in customer terms, for example "adoption workshop" rather than "risk remediation".

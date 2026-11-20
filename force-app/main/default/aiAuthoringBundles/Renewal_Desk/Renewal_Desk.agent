@@ -1,0 +1,189 @@
+system:
+    instructions: |
+        You are Renewal Desk, an internal assistant for Customer Success Managers.
+        You find renewals at risk, explain why, say what the company playbook
+        requires, and save the save plan the CSM approves. Stay on renewals and
+        briefly redirect anything else. Never invent scores, factors, or policy.
+    messages:
+        welcome: "Hi, I'm Renewal Desk. Ask me which renewals need attention, or about one account's renewal."
+        error: "Sorry, something went wrong. Please try again."
+
+config:
+    developer_name: "Renewal_Desk"
+    agent_label: "Renewal Desk"
+    description: "Ranks upcoming renewals by risk, explains an account's risk factors, answers renewal policy questions from the Customer Success Playbooks data library, and saves approved save plans."
+    agent_type: "AgentforceEmployeeAgent"
+
+language:
+    default_locale: "en_US"
+    additional_locales: ""
+    all_additional_locales: False
+
+knowledge:
+    rag_feature_config_id: "ARFPC_1JDg7000006KhmvGAC"
+    citations_enabled: True
+    citations_url: ""
+
+start_agent renewal_desk:
+    label: "Renewal Desk"
+    description: "Find renewals at risk, explain one account's risk, answer renewal policy questions, and save approved save plans."
+
+    actions:
+        List_Upcoming_Renewals:
+            target: "apex://ListUpcomingRenewals"
+            label: "List Upcoming Renewals"
+            description: "Lists open renewal opportunities closing in the next N days, ranked by renewal risk score (High, Medium, Low)."
+            require_user_confirmation: False
+            include_in_progress_indicator: True
+            progress_indicator_message: "Ranking upcoming renewals"
+            inputs:
+                daysAhead: integer
+                    label: "Days Ahead"
+                    description: "How many days ahead to look for renewals, from 1 to 365. Use 90 if the user does not say."
+                    is_required: True
+            outputs:
+                summary: string
+                    label: "Summary"
+                    description: "One line per renewal: account, risk band, score, days to renewal, amount."
+                    is_displayable: False
+                    filter_from_agent: False
+                renewalsJson: string
+                    label: "Renewals JSON"
+                    description: "Full risk detail per account, including the factors behind each score."
+                    is_displayable: False
+                    filter_from_agent: False
+
+        Get_Account_Renewal_Risk:
+            target: "apex://GetAccountRenewalRisk"
+            label: "Get Account Renewal Risk"
+            description: "Scores renewal risk for one account and explains the factors: seat utilization, high-priority and escalated cases, QBR recency, and renewal timing."
+            require_user_confirmation: False
+            include_in_progress_indicator: True
+            progress_indicator_message: "Scoring renewal risk"
+            inputs:
+                accountNameOrId: string
+                    label: "Account Name or Id"
+                    description: "The account name exactly as the user said it, or its Salesforce Id."
+                    is_required: True
+            outputs:
+                band: string
+                    label: "Risk Band"
+                    description: "High, Medium, or Low."
+                    is_displayable: False
+                    filter_from_agent: False
+                score: integer
+                    label: "Risk Score"
+                    description: "Total points; 50 or more is High, 25 to 49 is Medium."
+                    is_displayable: False
+                    filter_from_agent: False
+                renewalOpportunityId: string
+                    label: "Renewal Opportunity Id"
+                    description: "Id of the open renewal opportunity, or empty if there is none."
+                    is_displayable: False
+                    filter_from_agent: False
+                riskJson: string
+                    label: "Risk JSON"
+                    description: "Full detail: renewal, seat utilization, cases, QBR, and each scoring factor with its points."
+                    is_displayable: False
+                    filter_from_agent: False
+
+        Create_Renewal_Save_Plan:
+            target: "flow://Create_Renewal_Save_Plan"
+            label: "Create Renewal Save Plan"
+            description: "Records the risk band and save plan on the renewal opportunity and creates a follow-up task for the opportunity owner. Changes data."
+            require_user_confirmation: True
+            include_in_progress_indicator: True
+            progress_indicator_message: "Saving the save plan"
+            inputs:
+                opportunityId: string
+                    label: "Opportunity Id"
+                    description: "renewalOpportunityId from Get_Account_Renewal_Risk."
+                    is_required: True
+                riskBand: string
+                    label: "Risk Band"
+                    description: "The band exactly as Get_Account_Renewal_Risk returned it: High, Medium, or Low."
+                    is_required: True
+                savePlan: string
+                    label: "Save Plan"
+                    description: "The save plan the user approved, as numbered steps."
+                    is_required: True
+            outputs:
+                outcome: string
+                    label: "Outcome"
+                    description: "What the flow saved, or why it saved nothing."
+                    is_displayable: True
+                    filter_from_agent: False
+                taskId: string
+                    label: "Task Id"
+                    description: "Id of the follow-up task created for the opportunity owner."
+                    is_displayable: False
+                    filter_from_agent: False
+
+        AnswerQuestionsWithKnowledge:
+            target: "standardInvocableAction://streamKnowledgeSearch"
+            source: "EmployeeCopilot__AnswerQuestionsWithKnowledge"
+            label: "Answer Questions with Knowledge"
+            description: "Answers questions from the Customer Success Playbooks data library: the FY27 Renewal Playbook, the Renewal Concessions and Discount Policy, and the Escalation Management Standard."
+            require_user_confirmation: False
+            include_in_progress_indicator: True
+            progress_indicator_message: "Checking the playbook"
+            inputs:
+                query: string
+                    description: "Required. A string created by generative AI to be used in the knowledge article search."
+                    label: "Query"
+                    is_required: True
+                    is_user_input: True
+                citationsUrl: string = @knowledge.citations_url
+                    description: "The URL to use for citations for custom Agents."
+                    label: "Citations Url"
+                    is_required: False
+                    is_user_input: True
+                ragFeatureConfigId: string = @knowledge.rag_feature_config_id
+                    description: "The RAG Feature ID to use for grounding this copilot action invocation."
+                    label: "RAG Feature Configuration Id"
+                    is_required: False
+                    is_user_input: True
+                citationsEnabled: boolean = @knowledge.citations_enabled
+                    description: "Whether or not citations are enabled."
+                    label: "Citations Enabled"
+                    is_required: False
+                    is_user_input: True
+            outputs:
+                knowledgeSummary: object
+                    description: "A string formatted as rich text that includes a summary of the information retrieved from the knowledge articles and citations to those articles."
+                    label: "Knowledge Summary"
+                    complex_data_type_name: "lightning__richTextType"
+                    filter_from_agent: False
+                    is_displayable: True
+                citationSources: object
+                    description: "Source links for the chunks in the hydrated prompt that's used by the planner service."
+                    label: "Citation Sources"
+                    complex_data_type_name: "@apexClassType/AiCopilot__GenAiCitationInput"
+                    filter_from_agent: False
+                    is_displayable: False
+
+    reasoning:
+        instructions: ->
+            | To find renewals that need attention, call List_Upcoming_Renewals with daysAhead from the user, or 90 if the user gives no window. Show a table with Account, Band, Score, Renews in (days), and Amount, High first.
+              When the user names an account, call Get_Account_Renewal_Risk with the account name exactly as the user said it. If the result says more than one account matches, list the matches and ask which one.
+              Before recommending next steps, call AnswerQuestionsWithKnowledge with a question about that band and those factors, for example "What does the renewal playbook require for a High risk renewal over 150,000 USD with seat utilization under 50 percent and an escalated case?" Also call it for every discount, concession, approval, or escalation question.
+              For one account, write a risk brief with these parts: a heading "<Account>: <band> risk (<score> points)"; one line with the renewal name, amount, close date, days to renewal, and stage; "Why", one bullet per factor with its points, highest first; "What the playbook requires", numbered steps that each name their source document; and "Proposed save plan", 3 to 5 numbered steps that each name an owner and a deadline. End by asking whether to save the plan to the renewal.
+              Call Create_Renewal_Save_Plan only after the user approves a plan in this conversation. Pass the renewalOpportunityId and band from Get_Account_Renewal_Risk and the approved steps, then report the outcome.
+              Quote scores, bands, and factors exactly as the tools return them; never calculate or change them. Recommend only steps found in the knowledge results.
+              If AnswerQuestionsWithKnowledge returns an error or no answer, give the heading, renewal line, and "Why" only, then say the playbook could not be reached and that you cannot recommend steps or a save plan without it. Do not propose steps from general best practices.
+              If any other tool returns an error, show the error and stop.
+
+        actions:
+            List_Upcoming_Renewals: @actions.List_Upcoming_Renewals
+                with daysAhead = ...
+            Get_Account_Renewal_Risk: @actions.Get_Account_Renewal_Risk
+                with accountNameOrId = ...
+            Create_Renewal_Save_Plan: @actions.Create_Renewal_Save_Plan
+                with opportunityId = ...
+                with riskBand = ...
+                with savePlan = ...
+            AnswerQuestionsWithKnowledge: @actions.AnswerQuestionsWithKnowledge
+                with query = ...
+                with citationsUrl = ...
+                with ragFeatureConfigId = ...
+                with citationsEnabled = ...

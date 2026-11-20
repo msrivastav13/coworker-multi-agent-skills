@@ -1,0 +1,28 @@
+{
+  "required" : [ "caseId", "executiveOwnerName", "targetResolutionDate" ],
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "caseId" : {
+      "title" : "Case Id",
+      "description" : "caseId of the case from Get_Account_Escalations.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "executiveOwnerName" : {
+      "title" : "Executive Owner Name",
+      "description" : "Full name of the active user who will own the escalation, as the user said it.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "targetResolutionDate" : {
+      "title" : "Target Resolution Date",
+      "description" : "The resolution date the user gave, in YYYY-MM-DD format.",
+      "lightning:type" : "lightning__dateType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    }
+  },
+  "lightning:type" : "lightning__objectType"
+}

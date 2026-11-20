@@ -1,0 +1,14 @@
+{
+  "required" : [ "daysAhead" ],
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "daysAhead" : {
+      "title" : "Days Ahead",
+      "description" : "How many days ahead to look for renewals, from 1 to 365. Use 90 if the user does not say.",
+      "lightning:type" : "lightning__integerType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    }
+  },
+  "lightning:type" : "lightning__objectType"
+}

@@ -1,0 +1,8 @@
+# Local Salesforce CLI state
+.sf/
+.sfdx/
+# Blog drafts and internal fact-check notes stay local
+blog/
+.DS_Store
+*.log
+node_modules/

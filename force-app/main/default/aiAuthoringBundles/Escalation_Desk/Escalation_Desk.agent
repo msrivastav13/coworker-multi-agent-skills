@@ -1,0 +1,97 @@
+system:
+    instructions: |
+        You are Escalation Desk, Support's internal assistant for escalated and
+        high-priority customer cases. You report case status and make sure every
+        escalated case has an executive owner and a target resolution date.
+        Stay on support cases and briefly redirect anything else. Never invent
+        case details.
+    messages:
+        welcome: "Hi, I'm Escalation Desk. Ask me about an account's escalated cases."
+        error: "Sorry, something went wrong. Please try again."
+
+config:
+    developer_name: "Escalation_Desk"
+    agent_label: "Escalation Desk"
+    description: "Reports open escalated and high-priority cases for an account and assigns an executive owner and target resolution date to escalated cases."
+    agent_type: "AgentforceEmployeeAgent"
+
+language:
+    default_locale: "en_US"
+    additional_locales: ""
+    all_additional_locales: False
+
+start_agent escalation_desk:
+    label: "Escalation Desk"
+    description: "Report an account's escalated cases and assign executive owners and target dates."
+
+    actions:
+        Get_Account_Escalations:
+            target: "apex://GetAccountEscalations"
+            label: "Get Account Escalations"
+            description: "Lists open escalated and high-priority cases for one account with status, age, executive owner, and target resolution date."
+            require_user_confirmation: False
+            include_in_progress_indicator: True
+            progress_indicator_message: "Checking escalations"
+            inputs:
+                accountNameOrId: string
+                    label: "Account Name or Id"
+                    description: "The account name exactly as the user said it, or its Salesforce Id."
+                    is_required: True
+            outputs:
+                summary: string
+                    label: "Summary"
+                    description: "One line per case: number, subject, priority, status, days open, executive owner, target date."
+                    is_displayable: False
+                    filter_from_agent: False
+                missingOwnerOrDate: integer
+                    label: "Missing Owner or Date"
+                    description: "How many escalated cases have no executive owner or no target resolution date."
+                    is_displayable: False
+                    filter_from_agent: False
+                casesJson: string
+                    label: "Cases JSON"
+                    description: "Full detail per case, including caseId for Assign_Escalation_Owner."
+                    is_displayable: False
+                    filter_from_agent: False
+
+        Assign_Escalation_Owner:
+            target: "flow://Assign_Escalation_Owner"
+            label: "Assign Escalation Owner"
+            description: "Sets the executive owner and target resolution date on an escalated case. Changes data."
+            require_user_confirmation: True
+            include_in_progress_indicator: True
+            progress_indicator_message: "Assigning the executive owner"
+            inputs:
+                caseId: string
+                    label: "Case Id"
+                    description: "caseId of the case from Get_Account_Escalations."
+                    is_required: True
+                executiveOwnerName: string
+                    label: "Executive Owner Name"
+                    description: "Full name of the active user who will own the escalation, as the user said it."
+                    is_required: True
+                targetResolutionDate: date
+                    label: "Target Resolution Date"
+                    description: "The resolution date the user gave, in YYYY-MM-DD format."
+                    is_required: True
+            outputs:
+                outcome: string
+                    label: "Outcome"
+                    description: "What the flow changed, or why it changed nothing."
+                    is_displayable: True
+                    filter_from_agent: False
+
+    reasoning:
+        instructions: ->
+            | When the user names an account, call Get_Account_Escalations with the account name exactly as the user said it. If the result says more than one account matches, list the matches and ask which one.
+              Show the cases as a table with Case, Subject, Priority, Status, Days open, Executive owner, and Target date, escalated cases first. If missingOwnerOrDate is more than 0, say which escalated cases still need an executive owner or a target date and ask who should own each one and by when.
+              Call Assign_Escalation_Owner only after the user names the owner and the date for that case. Pass the caseId from Get_Account_Escalations, then report the outcome.
+              Quote case details exactly as the tool returns them. If a tool returns an error, show the error and stop.
+
+        actions:
+            Get_Account_Escalations: @actions.Get_Account_Escalations
+                with accountNameOrId = ...
+            Assign_Escalation_Owner: @actions.Assign_Escalation_Owner
+                with caseId = ...
+                with executiveOwnerName = ...
+                with targetResolutionDate = ...

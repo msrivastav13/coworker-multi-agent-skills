@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Executive_Owner__c</fullName>
+    <label>Executive Owner</label>
+    <description>Executive accountable for an escalated case (Escalation Management Standard 2.1). Set by the Assign Escalation Owner flow.</description>
+    <type>Lookup</type>
+    <referenceTo>User</referenceTo>
+    <relationshipName>Escalated_Cases_Owned</relationshipName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+</CustomField>

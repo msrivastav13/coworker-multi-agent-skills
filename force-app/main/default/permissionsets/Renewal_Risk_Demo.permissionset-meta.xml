@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Renewal Risk Demo</label>
+    <description>Access to the Renewal Desk and Escalation Desk agents, their Apex actions, and fields (Agentforce Coworker multi-agent skills demo).</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <agentAccesses><agentName>Escalation_Desk</agentName><enabled>true</enabled></agentAccesses>
+    <agentAccesses><agentName>Renewal_Desk</agentName><enabled>true</enabled></agentAccesses>
+    <classAccesses><apexClass>AccountResolver</apexClass><enabled>true</enabled></classAccesses>
+    <classAccesses><apexClass>GetAccountEscalations</apexClass><enabled>true</enabled></classAccesses>
+    <classAccesses><apexClass>GetAccountRenewalRisk</apexClass><enabled>true</enabled></classAccesses>
+    <classAccesses><apexClass>ListUpcomingRenewals</apexClass><enabled>true</enabled></classAccesses>
+    <classAccesses><apexClass>RenewalRiskService</apexClass><enabled>true</enabled></classAccesses>
+    <fieldPermissions><editable>true</editable><field>Account.Active_Users_30d__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>true</editable><field>Account.Last_QBR_Date__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>true</editable><field>Account.Licensed_Seats__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>true</editable><field>Opportunity.Renewal_Risk__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>true</editable><field>Opportunity.Save_Plan__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>true</editable><field>Case.Executive_Owner__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>true</editable><field>Case.Target_Resolution_Date__c</field><readable>true</readable></fieldPermissions>
+</PermissionSet>

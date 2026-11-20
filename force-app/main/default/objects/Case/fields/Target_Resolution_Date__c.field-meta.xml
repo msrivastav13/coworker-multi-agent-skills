@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Target_Resolution_Date__c</fullName>
+    <label>Target Resolution Date</label>
+    <description>Resolution date shared with the customer (Escalation Management Standard 2.3). Set by the Assign Escalation Owner flow.</description>
+    <type>Date</type>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+</CustomField>
